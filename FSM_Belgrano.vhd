@@ -9,7 +9,8 @@ entity FSM_Belgrano is
 	port(
 		Circuito_Via: in std_logic_vector(N-1 downto 0);
 		clock,reset: in std_logic;
-		ruta: in integer; 
+		--ruta: in integer; 
+		ruta: in ruta_array;
 		--Semaforos: out SEMAFORO;
 		Semaforos: out std_logic_vector(N_SM-1 downto 0);
 		Maquina: out std_logic;
@@ -116,27 +117,27 @@ begin
 			ruta_ascendente <= ASC_0;
 			ruta_descendente <= DES_0;
 		elsif (clock'event and clock='1') then
-			if (ruta = 0 and habilitacion(rutas'pos(RUTA0)) = '1') then
+			if ((ruta(0) = 0 or ruta(1) = 0) and habilitacion(rutas'pos(RUTA0)) = '1') then
 				ruta_ascendente <= ASC_0;
 				ruta_descendente <= DES_0;
 			end if;
-			if (ruta = 1 and habilitacion(rutas'pos(RUTA1)) = '1') then
+			if (ruta(0) = 1 and habilitacion(rutas'pos(RUTA1)) = '1') then
 				ruta_ascendente <= ASC_1;
 			end if;
-			if (ruta = 2 and habilitacion(rutas'pos(RUTA2)) = '1') then
+			if (ruta(0) = 2 and habilitacion(rutas'pos(RUTA2)) = '1') then
 				ruta_ascendente <= ASC_2;
 			end if;
-			if (ruta = 3 and habilitacion(rutas'pos(RUTA3)) = '1') then
+			if (ruta(1) = 3 and habilitacion(rutas'pos(RUTA3)) = '1') then
 				ruta_descendente <= DES_3;
 			end if;
-			if (ruta = 4 and habilitacion(rutas'pos(RUTA4)) = '1') then
+			if (ruta(1) = 4 and habilitacion(rutas'pos(RUTA4)) = '1') then
 				ruta_descendente <= DES_4;
 			end if;
-			if (ruta = 5 and habilitacion(rutas'pos(RUTA5)) = '1') then
+			if ((ruta(0) = 5 or ruta(1) =5) and habilitacion(rutas'pos(RUTA5)) = '1') then
 				ruta_ascendente <= ASC_5;
 				ruta_descendente <= DES_5;
 			end if;
-			if (ruta = 6 and habilitacion(rutas'pos(RUTA6)) = '1') then
+			if ((ruta(0) = 6 or ruta(1) =6) and habilitacion(rutas'pos(RUTA6)) = '1') then
 				ruta_ascendente <= ASC_6;
 				ruta_descendente <= DES_6;
 			end if;

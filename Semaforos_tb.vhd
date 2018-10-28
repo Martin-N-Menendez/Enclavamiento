@@ -14,7 +14,8 @@ architecture Semaforo_arq of Semaforo_tb is
 		port(
 			Circuito_Via: in std_logic_vector(N-1 downto 0);
 			clock,reset: in std_logic;
-			ruta: in integer; 
+			--ruta: in integer; 
+			ruta: in ruta_array;
 			Semaforos: out SEMAFORO;
 			Maquina: out std_logic;
 			PaN: out std_logic
@@ -26,7 +27,7 @@ architecture Semaforo_arq of Semaforo_tb is
 	constant delay: time := 50 ns;
 	
 	signal Circuito_Via_tb: std_logic_vector(N_tb-1 downto 0) := (N_tb-1 downto 0 => '1');
-	signal ruta_tb: integer := 0;
+	signal ruta_tb: ruta_array := (2-1 downto 0 => 0);
 	signal clock_tb: std_logic := '0';
 	signal reset_tb: std_logic := '0';
 	signal Semaforos_tb: SEMAFORO;
