@@ -188,7 +188,7 @@ begin
 		end if;
 	end process ASIGNAR_RUTAS;	
 	
-	RUTA_ASC: process (Ruta_ascendente,Clock)
+	ESTADOS_ASC: process (Ruta_ascendente,Clock)
 	begin
 		if (Clock'event and Clock ='1') then
 			case Ruta_ascendente is
@@ -282,53 +282,102 @@ begin
 					PaN_ASC(JURAMENTO) <= BARRERA_BAJA;
 			end case;
 		end if;		
-	end process RUTA_ASC;
+	end process ESTADOS_ASC;
 	
-	-- RUTA_DES: process (Ruta_descendente,Clock)
-	-- begin
-		-- if (Clock'event and Clock ='1') then
-		-- case Ruta_descendente is
-			-- when DES_0 => -- Ruta no asignada
-				-- --Semaforos_DES(sem_des_t'pos(SEM_F)) <= ROJO;
-				-- Maquina_DES <= NORMAL;
-				-- PaN_DES <= BARRERA_BAJA;
-			-- when DES_3 => 
-				-- --Semaforos_DES(sem_des_t'pos(SEM_F)) <= VERDE;			
-				-- Maquina_DES <= NORMAL;
-				-- PaN_DES <= BARRERA_BAJA;
-			-- when DES_4 => 
-				-- --Semaforos_DES(sem_des_t'pos(SEM_F)) <= ROJO;
-				-- Maquina_DES <= NORMAL;
-				-- PaN_DES <= BARRERA_ALTA;
-			-- when DES_5 =>
-				-- --Semaforos_DES(sem_des_t'pos(SEM_F)) <= ROJO;
-				-- Maquina_DES <= REVERSA;
-				-- PaN_DES <= BARRERA_BAJA;
-			-- when DES_6 =>
-				-- --Semaforos_DES(sem_des_t'pos(SEM_F)) <= ROJO;
-				-- Maquina_DES <= REVERSA;
-				-- PaN_DES <= BARRERA_BAJA;
-			-- when DES_8 => 
-				-- Maquina_DES <= NORMAL;
-			-- when DES_11 =>
-				-- Maquina_DES <= NORMAL;
-			-- when DES_12 => 
-				-- Maquina_DES <= NORMAL;
-			-- when DES_14 => 
-				-- Maquina_DES <= NORMAL;
-		-- end case;
-		-- end if;		
-	-- end process RUTA_DES;
+	ESTADOS_DES: process (Ruta_descendente,Clock)
+	begin
+		if (Clock'event and Clock ='1') then
+			case Ruta_descendente is
+				when DES_0 =>
+					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					Maquina_DES <= NORMAL;
+					PaN_DES(PAMPA) <= BARRERA_BAJA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
+					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+				when DES_6 => 
+					Semaforos_DES(sem_des_t'pos(SEM_2)) <= VERDE;
+					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+					--Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					Maquina_DES <= NORMAL;
+					PaN_DES(PAMPA) <= BARRERA_ALTA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_ALTA;
+					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+				when DES_7 => 
+					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_4)) <= VERDE;
+					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					Maquina_DES <= NORMAL;
+					PaN_DES(PAMPA) <= BARRERA_BAJA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
+					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+				when DES_8 =>
+					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_6)) <= VERDE;
+					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					Maquina_DES <= NORMAL;
+					PaN_DES(PAMPA) <= BARRERA_BAJA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
+					PaN_DES(JURAMENTO) <= BARRERA_ALTA;
+				when DES_9 =>
+					Semaforos_DES(sem_des_t'pos(SEM_2)) <= AMARILLO;
+					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_8)) <= VERDE;
+					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					Maquina_DES <= NORMAL;
+					PaN_DES(PAMPA) <= BARRERA_BAJA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_ALTA;
+					PaN_DES(JURAMENTO) <= BARRERA_ALTA;
+				when DES_10 => 
+					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					Maquina_DES <= REVERSA;
+					PaN_DES(PAMPA) <= BARRERA_BAJA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
+					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+				when DES_11 =>
+					Semaforos_DES(sem_des_t'pos(SEM_2)) <= AMARILLO;
+					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					Maquina_DES <= REVERSA;
+					PaN_DES(PAMPA) <= BARRERA_BAJA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
+					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+			end case;
+		end if;		
+	end process ESTADOS_DES;
 	
 	SEMAFORO_ASIGNADOR: process(Clock, Reset)
 	begin
 		if (Clock ='1' and Clock'Event and Reset='1') then
-			Semaforos <= "0000000000000000";
+			Semaforos <= "00000000000";
 		elsif (Clock'event and Clock='1') then
 			Semaforos(semaforos_t'pos(SEM_1)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_1));
+			Semaforos(semaforos_t'pos(SEM_2)) <= Semaforos_DES(sem_des_t'pos(SEM_2));
 			Semaforos(semaforos_t'pos(SEM_3)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_3));
+			Semaforos(semaforos_t'pos(SEM_4)) <= Semaforos_DES(sem_des_t'pos(SEM_4));
 			Semaforos(semaforos_t'pos(SEM_5)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_5));
-			--Semaforos(semaforos_t'pos(SEM_P)) <= Semaforos_DES(sem_des_t'pos(SEM_P));
+			Semaforos(semaforos_t'pos(SEM_6)) <= Semaforos_DES(sem_des_t'pos(SEM_6));
+			Semaforos(semaforos_t'pos(SEM_7)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_7));
+			Semaforos(semaforos_t'pos(SEM_8)) <= Semaforos_DES(sem_des_t'pos(SEM_8));
+			Semaforos(semaforos_t'pos(SEM_9)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_9));
+			Semaforos(semaforos_t'pos(SEM_10)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_10));
+			Semaforos(semaforos_t'pos(SEM_11)) <= Semaforos_DES(sem_des_t'pos(SEM_11));
 		end if;
 	end process SEMAFORO_ASIGNADOR;
 	
