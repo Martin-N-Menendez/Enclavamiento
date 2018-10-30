@@ -5,7 +5,7 @@ use IEEE.numeric_std.all;
 use work.semaforo_tipo.all;
 
 entity FSM_Belgrano is
-	generic( N_CV: natural := 12; N_SM: natural := 11; N_PaN: natural := 3; N_rutas: natural := 11 );
+	generic( N_CV: natural := 12; N_SM: natural := 11; N_PaN: natural := 3; N_rutas: natural := 13 );
 	port(
 		Clock,Reset: in std_logic;
 		Ruta: in ruta_array;
@@ -25,16 +25,16 @@ end FSM_Belgrano;
 
 architecture FSM_Belgrano_arq of FSM_Belgrano is
 	
-	type rutas is (RUTA0,RUTA1,RUTA2,RUTA3,RUTA4,RUTA5,RUTA6,RUTA7,RUTA8,RUTA9,RUTA10,RUTA11);
-	type rutas_asc is (ASC_0,ASC_1,ASC_2,ASC_3,ASC_4,ASC_5,ASC_10,ASC_11);
-	type rutas_des is (DES_0,DES_6,DES_7,DES_8,DES_9,DES_10,DES_11);
+	type rutas is (RUTA_RESET,RUTA1,RUTA2,RUTA3,RUTA4,RUTA5,RUTA6,RUTA7,RUTA8,RUTA9,RUTA10,RUTA11,RUTA_0ASC,RUTA_0DES);
+	type rutas_asc is (ASC_0,ASC_1,ASC_2,ASC_3,ASC_4,ASC_5,ASC_10,ASC_11,ASC_RESET);
+	type rutas_des is (DES_0,DES_6,DES_7,DES_8,DES_9,DES_10,DES_11,DES_RESET);
 	type circuitos_t is (CIRC1,CIRC2,CIRC3,CIRC4,CIRC5,CIRC6,CIRC7,CIRC8,CIRC9,CIRC10,CIRC11,CIRC12);
 	type semaforos_t is (SEM_1,SEM_2,SEM_3,SEM_4,SEM_5,SEM_6,SEM_7,SEM_8,SEM_9,SEM_10,SEM_11);
-	type SEM_asc_t is (SEM_1,SEM_3,SEM_5,SEM_7,SEM_9,SEM_10);
+	type sem_asc_t is (SEM_1,SEM_3,SEM_5,SEM_7,SEM_9,SEM_10);
 	type sem_des_t is (SEM_2,SEM_4,SEM_6,SEM_8,SEM_11);
 	
-	signal Ruta_ascendente: rutas_asc := ASC_0;
-	signal Ruta_descendente: rutas_des := DES_0;
+	signal Ruta_ascendente: rutas_asc := ASC_RESET;
+	signal Ruta_descendente: rutas_des := DES_RESET;
 	
 	constant SEMIAUTOMATICO: std_logic := '0';
 	constant AUTOMATICO: std_logic := '1';
@@ -61,8 +61,8 @@ architecture FSM_Belgrano_arq of FSM_Belgrano is
 	
 	signal habilitacion: std_logic_vector(N_rutas downto 0);
 	
-	signal Semaforos_ASC: std_logic_vector(N_SM/2-1 downto 0);
-	signal Semaforos_DES: std_logic_vector(N_SM/2-1 downto 0);
+	signal Semaforos_ASC: std_logic_vector(7-1 downto 0);
+	signal Semaforos_DES: std_logic_vector(6-1 downto 0);
 	
 	signal PaN_ASC: std_logic_vector(N_PaN-1 downto 0);
 	signal PaN_DES: std_logic_vector(N_PaN-1 downto 0);
@@ -70,7 +70,7 @@ architecture FSM_Belgrano_arq of FSM_Belgrano is
 	signal Maquina_DES: std_logic := '0';
 	
 begin	
-	habilitacion(rutas'pos(RUTA0)) <= '1';
+	habilitacion(rutas'pos(RUTA_RESET)) <= '1';
 	habilitacion(rutas'pos(RUTA1)) <= '1' when 
 						 Circuito_Via(circuitos_t'pos(CIRC1)) = LIBRE and 
 						 Circuito_Via(circuitos_t'pos(CIRC3)) = LIBRE and 
@@ -136,18 +136,32 @@ begin
 						 Circuito_Via(circuitos_t'pos(CIRC9)) = LIBRE and 
 						 Circuito_Via(circuitos_t'pos(CIRC10)) = LIBRE and 
 						 Circuito_Via(circuitos_t'pos(CIRC11)) = LIBRE else '0';
+	habilitacion(rutas'pos(RUTA_0ASC)) <= '1' when
+						 Circuito_Via(circuitos_t'pos(CIRC1)) = LIBRE and 
+						 Circuito_Via(circuitos_t'pos(CIRC3)) = LIBRE and 
+						 Circuito_Via(circuitos_t'pos(CIRC5)) = LIBRE and 
+						 Circuito_Via(circuitos_t'pos(CIRC7)) = LIBRE and 
+						 Circuito_Via(circuitos_t'pos(CIRC9)) = LIBRE and
+						 Circuito_Via(circuitos_t'pos(CIRC11)) = LIBRE else '0';
+	habilitacion(rutas'pos(RUTA_0DES)) <= '1' when
+						 Circuito_Via(circuitos_t'pos(CIRC2)) = LIBRE and 
+						 Circuito_Via(circuitos_t'pos(CIRC4)) = LIBRE and 
+						 Circuito_Via(circuitos_t'pos(CIRC6)) = LIBRE and 
+						 Circuito_Via(circuitos_t'pos(CIRC8)) = LIBRE and 
+						 Circuito_Via(circuitos_t'pos(CIRC10)) = LIBRE and 
+						 Circuito_Via(circuitos_t'pos(CIRC12)) = LIBRE else '0';
 						 
 	ASIGNAR_RUTAS: process(Clock, Reset)
 	begin
-		if (Clock ='1' and Clock'Event) then
+		if (Clock ='1' and Clock'Event and Modo = SEMIAUTOMATICO) then
 			if(Reset = '1') then
-				Ruta_ascendente <= ASC_0;
-				Ruta_descendente <= DES_0;
+				Ruta_ascendente <= ASC_RESET;
+				Ruta_descendente <= DES_RESET;
 			end if;
-			if (Ruta(ASCENDENTES) = 0 and habilitacion(rutas'pos(RUTA0)) = '1') then
+			if (Ruta(ASCENDENTES) = 0 and habilitacion(rutas'pos(RUTA_0ASC)) = '1') then
 				Ruta_ascendente <= ASC_0;
 			end if;
-			if (Ruta(DESCENDENTES) = 0 and habilitacion(rutas'pos(RUTA0)) = '1') then
+			if (Ruta(DESCENDENTES) = 0 and habilitacion(rutas'pos(RUTA_0DES)) = '1') then
 				Ruta_descendente <= DES_0;
 			end if;
 			if (Ruta(ASCENDENTES) = 1 and habilitacion(rutas'pos(RUTA1)) = '1') then
@@ -188,17 +202,28 @@ begin
 		end if;
 	end process ASIGNAR_RUTAS;	
 	
-	ESTADOS_ASC: process (Ruta_ascendente,Clock)
+	SEMI_ASC: process (Ruta_ascendente,Clock)
 	begin
 		if (Clock'event and Clock ='1') then
 			case Ruta_ascendente is
-				when ASC_0 =>
+				when ASC_RESET =>
 					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
 					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
 					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
 					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
 					Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
 					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+					Maquina_ASC <= NORMAL;
+					PaN_ASC(PAMPA) <= BARRERA_ALTA;
+					PaN_ASC(ECHEVERRIA) <= BARRERA_ALTA;
+					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;
+				when ASC_0 =>
+					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= VERDE;
+					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= VERDE;
+					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= VERDE;
+					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= VERDE;
+					Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= VERDE;
+					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= VERDE;
 					Maquina_ASC <= NORMAL;
 					PaN_ASC(PAMPA) <= BARRERA_BAJA;
 					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
@@ -258,6 +283,10 @@ begin
 					PaN_ASC(PAMPA) <= BARRERA_BAJA;
 					PaN_ASC(ECHEVERRIA) <= BARRERA_ALTA;
 					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;
+					
+					--if (Modo = AUTOMATICO and habilitacion(rutas'pos(RUTA_0ASC)) then
+					--	Ruta_ascendente <= ASC_0;
+					--end if;	
 				when ASC_10 => 
 					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
 					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
@@ -282,22 +311,32 @@ begin
 					PaN_ASC(JURAMENTO) <= BARRERA_BAJA;
 			end case;
 		end if;		
-	end process ESTADOS_ASC;
+	end process SEMI_ASC;
 	
-	ESTADOS_DES: process (Ruta_descendente,Clock)
+	SEMI_DES: process (Ruta_descendente,Clock)
 	begin
-		if (Clock'event and Clock ='1') then
+		if (Clock'event and Clock ='1' and Modo = SEMIAUTOMATICO) then
 			case Ruta_descendente is
-				when DES_0 =>
+				when DES_RESET =>
 					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
 					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
 					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
 					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
 					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
 					Maquina_DES <= NORMAL;
+					PaN_DES(PAMPA) <= BARRERA_ALTA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_ALTA;
+					PaN_DES(JURAMENTO) <= BARRERA_ALTA;
+				when DES_0 =>
+					Semaforos_DES(sem_des_t'pos(SEM_2)) <= VERDE;
+					Semaforos_DES(sem_des_t'pos(SEM_4)) <= VERDE;
+					Semaforos_DES(sem_des_t'pos(SEM_6)) <= VERDE;
+					Semaforos_DES(sem_des_t'pos(SEM_8)) <= VERDE;
+					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					Maquina_DES <= NORMAL;
 					PaN_DES(PAMPA) <= BARRERA_BAJA;
 					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
-					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+					PaN_DES(JURAMENTO) <= BARRERA_BAJA;	
 				when DES_6 => 
 					Semaforos_DES(sem_des_t'pos(SEM_2)) <= VERDE;
 					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
@@ -317,7 +356,7 @@ begin
 					Maquina_DES <= NORMAL;
 					PaN_DES(PAMPA) <= BARRERA_BAJA;
 					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
-					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+					PaN_DES(JURAMENTO) <= BARRERA_BAJA;			
 				when DES_8 =>
 					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
 					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
@@ -360,8 +399,8 @@ begin
 					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
 			end case;
 		end if;		
-	end process ESTADOS_DES;
-	
+	end process SEMI_DES;
+		
 	SEMAFORO_ASIGNADOR: process(Clock, Reset)
 	begin
 		if (Clock ='1' and Clock'Event and Reset='1') then
@@ -404,5 +443,16 @@ begin
 			Maquina <= Maquina_ASC and Maquina_DES;
 		end if;
 	end process MAQUINAS;
+	
+	-- MODOS: process(Clock, Reset)
+	-- begin
+		-- if (Clock ='1' and Clock'Event and Reset='1') then
+			-- Modo <= SEMIAUTOMATICO;
+		-- elsif (Clock'event and Clock='1') then
+			-- if (Modo = AUTOMATICO and habilitacion(rutas'pos(RUTA_0ASC)) = '1' habilitacion(rutas'pos(RUTA_0DES)) = '1') then
+				-- Modo = Modo;
+			-- end if;
+		-- end if;
+	-- end process MODOS;
 	
 end architecture;
