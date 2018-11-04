@@ -252,14 +252,25 @@ begin
 						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_1)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_3)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_5)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_7)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_9)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_10)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
-							--end if;
+							end if;
 						end if;								
 					end if;				
 					
@@ -275,14 +286,25 @@ begin
 						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_1)) /= VERDE ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= VERDE;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_3)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_5)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
-								--Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-								--Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
-								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;	
+							end if;
+							--if( Semaforos_in(semaforos_t'pos(SEM_7)) /= ROJO ) then -- dont care
+							--	Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
 							--end if;
+							--if( Semaforos_in(semaforos_t'pos(SEM_9)) /= ROJO ) then -- dont care
+							--	Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
+							--end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_10)) /= ROJO ) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							end if;
 						end if;								
 					end if;
 					
@@ -298,14 +320,25 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_1)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_3)) /= VERDE ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= VERDE;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_5)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_7)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-								--Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
-								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							end if;
+							--if( Semaforos_in(semaforos_t'pos(SEM_9)) /= ROJO ) then -- dont care
+							--	Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO; 		
 							--end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_10)) /= ROJO ) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							end if;
 						end if;								
 					end if;						
 					
@@ -321,14 +354,25 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_1)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_3)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_5)) /= VERDE ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= VERDE;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_7)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
-								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;	
-							--end if;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_9)) /= ROJO ) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_10)) /= ROJO ) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							end if;
 						end if;								
 					end if;						
 					
@@ -344,14 +388,25 @@ begin
 						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_1)) /= AMARILLO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_3)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_5)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_7)) /= VERDE ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= VERDE;
-								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_9)) /= ROJO ) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_10)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
-							--end if;
+							end if;
 						end if;								
 					end if;
 					
@@ -367,14 +422,25 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_1)) /= VERDE ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= VERDE;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_3)) /= AMARILLO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= AMARILLO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_5)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_7)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= VERDE;	
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_9)) /= VERDE ) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= VERDE;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_10)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
-							--end if;
+							end if;
 						end if;								
 					end if;
 					
@@ -390,14 +456,25 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then											
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_1)) /= AMARILLO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_3)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_5)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_7)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_9)) /= ROJO ) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_10)) /= AMARILLO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= AMARILLO;
-							--end if;
+							end if;
 						end if;								
 					end if;							
 					
@@ -413,14 +490,25 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then											
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_1)) /= AMARILLO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_3)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_5)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_7)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_9)) /= ROJO ) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_10)) /= ROJO ) then
 								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
-							--end if;
+							end if;
 						end if;								
 					end if;						
 					
@@ -465,14 +553,23 @@ begin
 						-- Controlar barreras
 						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
-							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
-								Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
-							--end if;
+							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then					
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_2)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_2)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_4)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_4)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_6)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_6)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_8)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_8)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_11)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_11)) <= ROJO;
+							end if;
 						end if;								
 					end if;
 							
@@ -488,13 +585,22 @@ begin
 						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
-								Semaforos_DES(sem_des_t'pos(SEM_2)) <= VERDE;
-								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-								--Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_2)) /= VERDE ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_2)) <= VERDE;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_4)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_4)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_6)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_6)) <= ROJO;
+							end if;
+							--if( Semaforos_in(semaforos_t'pos(SEM_8)) /= ROJO ) then -- dont care
+							--	Semaforos_DES(SEM_des_t'pos(SEM_8)) <= ROJO;
 							--end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_11)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_11)) <= ROJO;
+							end if;
 						end if;								
 					end if;
 										
@@ -510,13 +616,22 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
-								Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_4)) <= VERDE;
-								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
-							--end if;
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_2)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_2)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_4)) /= VERDE ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_4)) <= VERDE;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_6)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_6)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_8)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_8)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_11)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_11)) <= ROJO;
+							end if;
 						end if;								
 					end if;
 												
@@ -532,13 +647,22 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
-								Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_6)) <= VERDE;
-								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
-							--end if;
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_2)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_2)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_4)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_4)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_6)) /= VERDE ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_6)) <= VERDE;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_8)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_8)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_11)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_11)) <= ROJO;
+							end if;
 						end if;								
 					end if;
 	
@@ -554,13 +678,22 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
-								Semaforos_DES(sem_des_t'pos(SEM_2)) <= AMARILLO;
-								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_8)) <= VERDE;
-								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
-							--end if;
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_2)) /= AMARILLO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_2)) <= AMARILLO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_4)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_4)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_6)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_6)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_8)) /= VERDE ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_8)) <= VERDE;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_11)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_11)) <= ROJO;
+							end if;
 						end if;								
 					end if;
 					
@@ -576,13 +709,22 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
-								Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
-							--end if;
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_2)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_2)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_4)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_4)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_6)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_6)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_8)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_8)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_11)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_11)) <= ROJO;
+							end if;
 						end if;								
 					end if;
 	
@@ -598,13 +740,22 @@ begin
 						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
 							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
 							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
-							--if(SEMAFOROS_IN !=) then					
-								Semaforos_DES(sem_des_t'pos(SEM_2)) <= AMARILLO;
-								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
-							--end if;
+							-- Control de semaforos
+							if( Semaforos_in(semaforos_t'pos(SEM_2)) /= AMARILLO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_2)) <= AMARILLO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_4)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_4)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_6)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_6)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_8)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_8)) <= ROJO;
+							end if;
+							if( Semaforos_in(semaforos_t'pos(SEM_11)) /= ROJO ) then
+								Semaforos_DES(SEM_des_t'pos(SEM_11)) <= ROJO;
+							end if;
 						end if;								
 					end if;					
 			end case;

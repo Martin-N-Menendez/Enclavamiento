@@ -95,6 +95,18 @@ begin
 	PaN_Bajo_tb(JURAMENTO) <= PaN_tb(JURAMENTO);
 	PaN_Alto_tb(JURAMENTO) <= not PaN_tb(JURAMENTO);
 	
+	Semaforos_in_tb(semaforos_t'pos(SEM_1)) <= Semaforos_tb(semaforos_t'pos(SEM_1));
+	Semaforos_in_tb(semaforos_t'pos(SEM_2)) <= Semaforos_tb(semaforos_t'pos(SEM_2));
+	Semaforos_in_tb(semaforos_t'pos(SEM_3)) <= Semaforos_tb(semaforos_t'pos(SEM_3));
+	Semaforos_in_tb(semaforos_t'pos(SEM_4)) <= Semaforos_tb(semaforos_t'pos(SEM_4));
+	Semaforos_in_tb(semaforos_t'pos(SEM_5)) <= Semaforos_tb(semaforos_t'pos(SEM_5));
+	Semaforos_in_tb(semaforos_t'pos(SEM_6)) <= Semaforos_tb(semaforos_t'pos(SEM_6));
+	Semaforos_in_tb(semaforos_t'pos(SEM_7)) <= Semaforos_tb(semaforos_t'pos(SEM_7));
+	Semaforos_in_tb(semaforos_t'pos(SEM_8)) <= Semaforos_tb(semaforos_t'pos(SEM_8));
+	Semaforos_in_tb(semaforos_t'pos(SEM_9)) <= Semaforos_tb(semaforos_t'pos(SEM_9));
+	Semaforos_in_tb(semaforos_t'pos(SEM_10)) <= Semaforos_tb(semaforos_t'pos(SEM_10));
+	Semaforos_in_tb(semaforos_t'pos(SEM_11)) <= Semaforos_tb(semaforos_t'pos(SEM_11));
+	
 	BOOTING: process
 	begin
 		wait for 10 ns;
