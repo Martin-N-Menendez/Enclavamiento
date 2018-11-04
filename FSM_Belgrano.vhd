@@ -5,7 +5,8 @@ use IEEE.numeric_std.all;
 use work.semaforo_tipo.all;
 
 entity FSM_Belgrano is
-	generic( N_CV: natural := 12; N_SM: natural := 11; N_PaN: natural := 3; N_rutas: natural := 13 );
+	generic( N_CV: natural := 12; N_SM: natural := 11; N_PaN: natural := 3; 
+N_rutas: natural := 13 );
 	port(
 		Clock,Reset: in std_logic;
 		Ruta: in ruta_array;
@@ -33,8 +34,8 @@ architecture FSM_Belgrano_arq of FSM_Belgrano is
 	type sem_asc_t is (SEM_1,SEM_3,SEM_5,SEM_7,SEM_9,SEM_10);
 	type sem_des_t is (SEM_2,SEM_4,SEM_6,SEM_8,SEM_11);
 	
-	signal Ruta_ascendente: rutas_asc := ASC_RESET;
-	signal Ruta_descendente: rutas_des := DES_RESET;
+	signal Ruta_ascendente: rutas_asc := ASC_0;
+	signal Ruta_descendente: rutas_des := DES_0;
 	
 	constant SEMIAUTOMATICO: std_logic := '0';
 	constant AUTOMATICO: std_logic := '1';
@@ -56,6 +57,19 @@ architecture FSM_Belgrano_arq of FSM_Belgrano is
 	constant VERDE: std_logic := '1';		-- -1
 	constant NORMAL: std_logic := '0';
 	constant REVERSA: std_logic := '1';
+	
+	constant S_NORMAL: std_logic := '0';
+	constant S_NO_NORMAL: std_logic := '1';
+	
+	constant S_REVERSA: std_logic := '0';
+	constant S_NO_REVERSA: std_logic := '1';
+	
+	constant S_BAJO: std_logic := '0';
+	constant S_NO_BAJO: std_logic := '1';
+	
+	constant S_ALTO: std_logic := '0';
+	constant S_NO_ALTO: std_logic := '1';
+	
 	constant BARRERA_BAJA: std_logic := '0';
 	constant BARRERA_ALTA: std_logic := '1';	
 	
@@ -154,10 +168,10 @@ begin
 	ASIGNAR_RUTAS: process(Clock, Reset)
 	begin
 		if (Clock ='1' and Clock'Event and Modo = SEMIAUTOMATICO) then
-			if(Reset = '1') then
-				Ruta_ascendente <= ASC_RESET;
-				Ruta_descendente <= DES_RESET;
-			end if;
+			-- if(Reset = '1') then
+				-- Ruta_ascendente <= ASC_RESET;
+				-- Ruta_descendente <= DES_RESET;
+			-- end if;
 			if (Ruta(ASCENDENTES) = 0 and habilitacion(rutas'pos(RUTA_0ASC)) = '1') then
 				Ruta_ascendente <= ASC_0;
 			end if;
@@ -207,108 +221,209 @@ begin
 		if (Clock'event and Clock ='1') then
 			case Ruta_ascendente is
 				when ASC_RESET =>
-					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+					-- Manejo de sistemas
 					Maquina_ASC <= NORMAL;
 					PaN_ASC(PAMPA) <= BARRERA_ALTA;
 					PaN_ASC(ECHEVERRIA) <= BARRERA_ALTA;
-					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;
+					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;				
+					-- comprobar maquina
+					--if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						--if(Barreras in = Barreras)
+							--if(SEMAFOROS_IN !=) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							--end if;
+						--end if;								
+					--end if;							
 				when ASC_0 =>
-					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= VERDE;
-					Maquina_ASC <= NORMAL;
-					PaN_ASC(PAMPA) <= BARRERA_BAJA;
-					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
-					PaN_ASC(JURAMENTO) <= BARRERA_BAJA;
-				when ASC_1 => 
-					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
-					--Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-					--Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
-					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;				
+					-- Manejo de sistemas
 					Maquina_ASC <= NORMAL;
 					PaN_ASC(PAMPA) <= BARRERA_ALTA;
 					PaN_ASC(ECHEVERRIA) <= BARRERA_ALTA;
-					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;
-				when ASC_2 => 
-					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-					--Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
-					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;				
-					Maquina_ASC <= NORMAL;
-					PaN_ASC(PAMPA) <= BARRERA_BAJA;
-					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
-					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;
-				when ASC_3 =>
-					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
-					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;				
-					Maquina_ASC <= NORMAL;
-					PaN_ASC(PAMPA) <= BARRERA_BAJA;
-					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
-					PaN_ASC(JURAMENTO) <= BARRERA_BAJA;
-				when ASC_4 =>
-					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
-					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;				
-					Maquina_ASC <= NORMAL;
-					PaN_ASC(PAMPA) <= BARRERA_ALTA;
-					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
-					PaN_ASC(JURAMENTO) <= BARRERA_BAJA;
-				when ASC_5 =>
-					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= VERDE;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= AMARILLO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= VERDE;	
-					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;				
-					Maquina_ASC <= NORMAL;
-					PaN_ASC(PAMPA) <= BARRERA_BAJA;
-					PaN_ASC(ECHEVERRIA) <= BARRERA_ALTA;
-					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;
+					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;			
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							--end if;
+						end if;								
+					end if;				
 					
-					--if (Modo = AUTOMATICO and habilitacion(rutas'pos(RUTA_0ASC)) then
-					--	Ruta_ascendente <= ASC_0;
-					--end if;	
+				when ASC_1 => 
+					-- Manejo de sistemas
+					Maquina_ASC <= NORMAL;
+					PaN_ASC(PAMPA) <= BARRERA_ALTA;
+					PaN_ASC(ECHEVERRIA) <= BARRERA_ALTA;
+					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;		
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then
+								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= VERDE;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+								--Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
+								--Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;	
+							--end if;
+						end if;								
+					end if;
+					
+				when ASC_2 => 
+					-- Manejo de sistemas
+					Maquina_ASC <= NORMAL;
+					PaN_ASC(PAMPA) <= BARRERA_BAJA;
+					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
+					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;	
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= VERDE;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
+								--Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							--end if;
+						end if;								
+					end if;						
+					
+				when ASC_3 =>
+					-- Manejo de sistemas
+					Maquina_ASC <= NORMAL;
+					PaN_ASC(PAMPA) <= BARRERA_BAJA;
+					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
+					PaN_ASC(JURAMENTO) <= BARRERA_BAJA;
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= VERDE;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;	
+							--end if;
+						end if;								
+					end if;						
+					
+				when ASC_4 =>
+					-- Manejo de sistemas
+					Maquina_ASC <= NORMAL;
+					PaN_ASC(PAMPA) <= BARRERA_ALTA;
+					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
+					PaN_ASC(JURAMENTO) <= BARRERA_BAJA;
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= VERDE;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							--end if;
+						end if;								
+					end if;
+					
+				when ASC_5 =>
+					-- Manejo de sistemas
+					Maquina_ASC <= NORMAL;
+					PaN_ASC(PAMPA) <= BARRERA_BAJA;
+					PaN_ASC(ECHEVERRIA) <= BARRERA_ALTA;
+					PaN_ASC(JURAMENTO) <= BARRERA_ALTA;
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= VERDE;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= AMARILLO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= VERDE;	
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							--end if;
+						end if;								
+					end if;
+					
 				when ASC_10 => 
-					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
-					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= AMARILLO;				
+					-- Manejo de sistemas
 					Maquina_ASC <= REVERSA;
 					PaN_ASC(PAMPA) <= BARRERA_BAJA;
 					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
 					PaN_ASC(JURAMENTO) <= BARRERA_BAJA;
+					-- comprobar maquina
+					if (Maquina_N = S_NO_NORMAL and Maquina_R = S_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then											
+								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= AMARILLO;
+							--end if;
+						end if;								
+					end if;							
+					
 				when ASC_11 =>
-					Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
-					Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
-					Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;				
+					-- Manejo de sistemas
 					Maquina_ASC <= REVERSA;
 					PaN_ASC(PAMPA) <= BARRERA_BAJA;
 					PaN_ASC(ECHEVERRIA) <= BARRERA_BAJA;
 					PaN_ASC(JURAMENTO) <= BARRERA_BAJA;
+					-- comprobar maquina
+					if (Maquina_N = S_NO_NORMAL and Maquina_R = S_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then											
+								Semaforos_ASC(SEM_asc_t'pos(SEM_1)) <= AMARILLO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_3)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_5)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_7)) <= ROJO;
+								Semaforos_ASC(SEM_asc_t'pos(SEM_9)) <= ROJO;	
+								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
+							--end if;
+						end if;								
+					end if;						
+					
 			end case;
 		end if;		
 	end process SEMI_ASC;
@@ -318,109 +433,206 @@ begin
 		if (Clock'event and Clock ='1' and Modo = SEMIAUTOMATICO) then
 			case Ruta_descendente is
 				when DES_RESET =>
-					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					-- Manejo de sistemas
 					Maquina_DES <= NORMAL;
 					PaN_DES(PAMPA) <= BARRERA_ALTA;
 					PaN_DES(ECHEVERRIA) <= BARRERA_ALTA;
 					PaN_DES(JURAMENTO) <= BARRERA_ALTA;
+					-- comprobar maquina
+					--if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+							--end if;
+						end if;								
+					--end if;			
+					
 				when DES_0 =>
-					Semaforos_DES(sem_des_t'pos(SEM_2)) <= VERDE;
-					Semaforos_DES(sem_des_t'pos(SEM_4)) <= VERDE;
-					Semaforos_DES(sem_des_t'pos(SEM_6)) <= VERDE;
-					Semaforos_DES(sem_des_t'pos(SEM_8)) <= VERDE;
-					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					-- Manejo de sistemas
+					Maquina_DES <= NORMAL;
+					PaN_DES(PAMPA) <= BARRERA_ALTA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_ALTA;
+					PaN_DES(JURAMENTO) <= BARRERA_ALTA;	
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+							--end if;
+						end if;								
+					end if;
+							
+				when DES_6 => 
+					-- Manejo de sistemas
+					Maquina_DES <= NORMAL;
+					PaN_DES(PAMPA) <= BARRERA_ALTA;
+					PaN_DES(ECHEVERRIA) <= BARRERA_ALTA;
+					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) >= S_BAJO and PaN_Alto(PAMPA) <= S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_DES(sem_des_t'pos(SEM_2)) <= VERDE;
+								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+								--Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+							--end if;
+						end if;								
+					end if;
+										
+				when DES_7 => 
+					-- Manejo de sistemas
 					Maquina_DES <= NORMAL;
 					PaN_DES(PAMPA) <= BARRERA_BAJA;
 					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
 					PaN_DES(JURAMENTO) <= BARRERA_BAJA;	
-				when DES_6 => 
-					Semaforos_DES(sem_des_t'pos(SEM_2)) <= VERDE;
-					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-					--Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
-					Maquina_DES <= NORMAL;
-					PaN_DES(PAMPA) <= BARRERA_ALTA;
-					PaN_DES(ECHEVERRIA) <= BARRERA_ALTA;
-					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
-				when DES_7 => 
-					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_4)) <= VERDE;
-					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
-					Maquina_DES <= NORMAL;
-					PaN_DES(PAMPA) <= BARRERA_BAJA;
-					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
-					PaN_DES(JURAMENTO) <= BARRERA_BAJA;			
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_4)) <= VERDE;
+								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+							--end if;
+						end if;								
+					end if;
+												
 				when DES_8 =>
-					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_6)) <= VERDE;
-					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					-- Manejo de sistemas
 					Maquina_DES <= NORMAL;
 					PaN_DES(PAMPA) <= BARRERA_BAJA;
 					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
 					PaN_DES(JURAMENTO) <= BARRERA_ALTA;
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_6)) <= VERDE;
+								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+							--end if;
+						end if;								
+					end if;
+	
 				when DES_9 =>
-					Semaforos_DES(sem_des_t'pos(SEM_2)) <= AMARILLO;
-					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_8)) <= VERDE;
-					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					-- Manejo de sistemas
 					Maquina_DES <= NORMAL;
 					PaN_DES(PAMPA) <= BARRERA_BAJA;
 					PaN_DES(ECHEVERRIA) <= BARRERA_ALTA;
 					PaN_DES(JURAMENTO) <= BARRERA_ALTA;
+					-- comprobar maquina
+					if (Maquina_N = NORMAL and Maquina_R = S_NO_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) >= S_BAJO and PaN_Alto(ECHEVERRIA) <= S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) >= S_BAJO and PaN_Alto(JURAMENTO) <= S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_DES(sem_des_t'pos(SEM_2)) <= AMARILLO;
+								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_8)) <= VERDE;
+								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+							--end if;
+						end if;								
+					end if;
+					
 				when DES_10 => 
-					Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					-- Manejo de sistemas
 					Maquina_DES <= REVERSA;
 					PaN_DES(PAMPA) <= BARRERA_BAJA;
 					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
 					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+					-- comprobar maquina
+					if (Maquina_N = S_NO_NORMAL and Maquina_R = S_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_DES(sem_des_t'pos(SEM_2)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+							--end if;
+						end if;								
+					end if;
+	
 				when DES_11 =>
-					Semaforos_DES(sem_des_t'pos(SEM_2)) <= AMARILLO;
-					Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
-					Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+					-- Manejo de sistemas
 					Maquina_DES <= REVERSA;
 					PaN_DES(PAMPA) <= BARRERA_BAJA;
 					PaN_DES(ECHEVERRIA) <= BARRERA_BAJA;
 					PaN_DES(JURAMENTO) <= BARRERA_BAJA;
+					-- comprobar maquina
+					if (Maquina_N = S_NO_NORMAL and Maquina_R = S_REVERSA) then
+						-- Controlar barreras
+						if( PaN_Bajo(PAMPA) = S_BAJO and PaN_Alto(PAMPA) = S_NO_ALTO and
+							PaN_Bajo(ECHEVERRIA) = S_BAJO and PaN_Alto(ECHEVERRIA) = S_NO_ALTO and
+							PaN_Bajo(JURAMENTO) = S_BAJO and PaN_Alto(JURAMENTO) = S_NO_ALTO) then
+							--if(SEMAFOROS_IN !=) then					
+								Semaforos_DES(sem_des_t'pos(SEM_2)) <= AMARILLO;
+								Semaforos_DES(sem_des_t'pos(SEM_4)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_6)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_8)) <= ROJO;
+								Semaforos_DES(sem_des_t'pos(SEM_11)) <= ROJO;
+							--end if;
+						end if;								
+					end if;					
 			end case;
 		end if;		
 	end process SEMI_DES;
 		
-	SEMAFORO_ASIGNADOR: process(Clock, Reset)
+	SEMAFORO_ASIGNADOR: process(Clock)
 	begin
-		if (Clock ='1' and Clock'Event and Reset='1') then
-			Semaforos <= "00000000000";
-		elsif (Clock'event and Clock='1') then
-			Semaforos(semaforos_t'pos(SEM_1)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_1));
-			Semaforos(semaforos_t'pos(SEM_2)) <= Semaforos_DES(sem_des_t'pos(SEM_2));
-			Semaforos(semaforos_t'pos(SEM_3)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_3));
-			Semaforos(semaforos_t'pos(SEM_4)) <= Semaforos_DES(sem_des_t'pos(SEM_4));
-			Semaforos(semaforos_t'pos(SEM_5)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_5));
-			Semaforos(semaforos_t'pos(SEM_6)) <= Semaforos_DES(sem_des_t'pos(SEM_6));
-			Semaforos(semaforos_t'pos(SEM_7)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_7));
-			Semaforos(semaforos_t'pos(SEM_8)) <= Semaforos_DES(sem_des_t'pos(SEM_8));
-			Semaforos(semaforos_t'pos(SEM_9)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_9));
-			Semaforos(semaforos_t'pos(SEM_10)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_10));
-			Semaforos(semaforos_t'pos(SEM_11)) <= Semaforos_DES(sem_des_t'pos(SEM_11));
+		if (Clock ='1' and Clock'Event) then
+			if (Reset = '1') then
+				Semaforos <= "00000000000";
+			else
+				Semaforos(semaforos_t'pos(SEM_1)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_1));
+				Semaforos(semaforos_t'pos(SEM_2)) <= Semaforos_DES(sem_des_t'pos(SEM_2));
+				Semaforos(semaforos_t'pos(SEM_3)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_3));
+				Semaforos(semaforos_t'pos(SEM_4)) <= Semaforos_DES(sem_des_t'pos(SEM_4));
+				Semaforos(semaforos_t'pos(SEM_5)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_5));
+				Semaforos(semaforos_t'pos(SEM_6)) <= Semaforos_DES(sem_des_t'pos(SEM_6));
+				Semaforos(semaforos_t'pos(SEM_7)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_7));
+				Semaforos(semaforos_t'pos(SEM_8)) <= Semaforos_DES(sem_des_t'pos(SEM_8));
+				Semaforos(semaforos_t'pos(SEM_9)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_9));
+				Semaforos(semaforos_t'pos(SEM_10)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_10));
+				Semaforos(semaforos_t'pos(SEM_11)) <= Semaforos_DES(sem_des_t'pos(SEM_11));
+			end if;
 		end if;
 	end process SEMAFORO_ASIGNADOR;
 	
-	BARRERAS: process(Clock, Reset)
+	BARRERAS: process(Clock)
 	begin
 		if (Clock ='1' and Clock'Event) then
 			if (Reset = '1') then
@@ -430,17 +642,39 @@ begin
 			else
 				PaN(PAMPA) <= PaN_ASC(PAMPA) and PaN_DES(PAMPA);
 				PaN(ECHEVERRIA) <= PaN_ASC(ECHEVERRIA) and PaN_DES(ECHEVERRIA);
-				PaN(JURAMENTO) <= PaN_ASC(JURAMENTO) and PaN_DES(JURAMENTO);
+				PaN(JURAMENTO) <= PaN_ASC(JURAMENTO) and PaN_DES(JURAMENTO);		
 			end if;
+			
+			-- if PaN(PAMPA) = BARRERA_BAJA then
+				-- PaN_Bajo(PAMPA) <= PaN(PAMPA);
+			-- end if;
+			-- if PaN(ECHEVERRIA) = BARRERA_BAJA then
+				-- PaN_Bajo(ECHEVERRIA) <= PaN(ECHEVERRIA);
+			-- end if;
+			-- if PaN(JURAMENTO) = BARRERA_BAJA then
+				-- PaN_Bajo(JURAMENTO) <= PaN(JURAMENTO);
+			-- end if;
+				
+			-- if PaN(PAMPA) = BARRERA_ALTA then
+				-- PaN_Alto(PAMPA) <= PaN(PAMPA);
+			-- end if;
+			-- if PaN(ECHEVERRIA) = BARRERA_ALTA then
+				-- PaN_Alto(ECHEVERRIA) <= PaN(ECHEVERRIA);
+			-- end if;
+			-- if PaN(JURAMENTO) = BARRERA_ALTA then
+				-- PaN_Alto(JURAMENTO) <= PaN(JURAMENTO);
+			-- end if;
 		end if;
 	end process BARRERAS;
 	
-	MAQUINAS: process(Clock, Reset)
+	MAQUINAS: process(Clock)
 	begin
-		if (Clock ='1' and Clock'Event and Reset='1') then
-			Maquina <= NORMAL;
-		elsif (Clock'event and Clock='1') then
-			Maquina <= Maquina_ASC and Maquina_DES;
+		if (Clock ='1' and Clock'Event) then
+			if (Reset = '1') then
+				Maquina <= NORMAL;
+			else	
+				Maquina <= Maquina_ASC and Maquina_DES;
+			end if;
 		end if;
 	end process MAQUINAS;
 	

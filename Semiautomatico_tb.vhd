@@ -83,6 +83,18 @@ architecture Semiautomatico_tb_arq of Semiautomatico_tb is
 begin
 	Clock_tb <= not Clock_tb after 10 ns;
 	
+	Maquina_N_tb <= Maquina_tb;
+	Maquina_R_tb <= not Maquina_tb;
+		
+	PaN_Bajo_tb(PAMPA) <= PaN_tb(PAMPA);
+	PaN_Alto_tb(PAMPA) <= not PaN_tb(PAMPA);
+	
+	PaN_Bajo_tb(ECHEVERRIA) <= PaN_tb(ECHEVERRIA);
+	PaN_Alto_tb(ECHEVERRIA) <= not PaN_tb(ECHEVERRIA);
+	
+	PaN_Bajo_tb(JURAMENTO) <= PaN_tb(JURAMENTO);
+	PaN_Alto_tb(JURAMENTO) <= not PaN_tb(JURAMENTO);
+	
 	BOOTING: process
 	begin
 		wait for 10 ns;
@@ -169,7 +181,7 @@ begin
 		Ruta_tb(1) <= 0;
 		wait for 2000 ns;
 	end process RUTAS_gen;
-
+	
 	DUT: FSM_Belgrano
 		port map(
 			Clock => Clock_tb,
