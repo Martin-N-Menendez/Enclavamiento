@@ -111,7 +111,7 @@ begin
 	begin
 		wait for 10 ns;
 		Reset_tb <= '1';
-		wait for 10 ns;
+		wait for 20 ns;
 		Reset_tb <= '0';
 		wait for 5500 ns;
 	end process BOOTING;
