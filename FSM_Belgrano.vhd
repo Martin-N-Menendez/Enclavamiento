@@ -75,6 +75,19 @@ architecture FSM_Belgrano_arq of FSM_Belgrano is
 	
 	signal habilitacion: std_logic_vector(N_rutas downto 0);
 	
+	signal semaforo_auto_CV_1: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_2: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_3: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_4: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_5: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_6: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_7: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_8: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_9: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_10: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_11: std_logic_vector(N_SM-1 downto 0);
+	signal semaforo_auto_CV_12: std_logic_vector(N_SM-1 downto 0);
+	
 	signal Semaforos_ASC: std_logic_vector(7-1 downto 0);
 	signal Semaforos_DES: std_logic_vector(6-1 downto 0);
 	
@@ -218,7 +231,7 @@ begin
 	
 	SEMI_ASC: process (Ruta_ascendente,Clock)
 	begin
-		if (Clock'event and Clock ='1') then
+		if (Clock'event and Clock ='1' and Modo = SEMIAUTOMATICO) then
 			case Ruta_ascendente is
 				when ASC_RESET =>
 					-- Manejo de sistemas
@@ -510,8 +523,7 @@ begin
 								Semaforos_ASC(SEM_asc_t'pos(SEM_10)) <= ROJO;
 							end if;
 						end if;								
-					end if;						
-					
+					end if;										
 			end case;
 		end if;		
 	end process SEMI_ASC;
@@ -761,24 +773,123 @@ begin
 			end case;
 		end if;		
 	end process SEMI_DES;
-		
+	
+	MODO_AUTOMATICO: process (Clock)
+	begin
+		if (Clock'event and Clock ='1' and Modo = AUTOMATICO) then
+			if (Circuito_Via(circuitos_t'pos(CIRC1)) = OCUPADO) then
+				semaforo_auto_CV_1(semaforos_t'pos(SEM_1)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC1)) = LIBRE) then
+				semaforo_auto_CV_1 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC2)) = OCUPADO) then
+				semaforo_auto_CV_2(semaforos_t'pos(SEM_4)) <= AMARILLO;
+				semaforo_auto_CV_2(semaforos_t'pos(SEM_6)) <= ROJO;
+				semaforo_auto_CV_2(semaforos_t'pos(SEM_8)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC2)) = LIBRE) then
+				semaforo_auto_CV_2 <= "11111111111";
+			end if;	
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC3)) = OCUPADO) then
+				semaforo_auto_CV_3(semaforos_t'pos(SEM_1)) <= ROJO;
+				semaforo_auto_CV_3(semaforos_t'pos(SEM_3)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC3)) = LIBRE) then
+				semaforo_auto_CV_3 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC4)) = OCUPADO) then
+				semaforo_auto_CV_4(semaforos_t'pos(SEM_2)) <= AMARILLO;
+				semaforo_auto_CV_4(semaforos_t'pos(SEM_4)) <= ROJO;	
+				semaforo_auto_CV_4(semaforos_t'pos(SEM_6)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC4)) = LIBRE) then
+				semaforo_auto_CV_4 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC5)) = OCUPADO) then
+				semaforo_auto_CV_5(semaforos_t'pos(SEM_1)) <= ROJO;
+				semaforo_auto_CV_5(semaforos_t'pos(SEM_3)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC5)) = LIBRE) then
+				semaforo_auto_CV_5 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC6)) = OCUPADO) then
+				semaforo_auto_CV_6(semaforos_t'pos(SEM_2)) <= ROJO;
+				semaforo_auto_CV_6(semaforos_t'pos(SEM_4)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC6)) = LIBRE) then
+				semaforo_auto_CV_6 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC7)) = OCUPADO) then
+				semaforo_auto_CV_7(semaforos_t'pos(SEM_1)) <= AMARILLO;
+				semaforo_auto_CV_7(semaforos_t'pos(SEM_3)) <= ROJO;
+				semaforo_auto_CV_7(semaforos_t'pos(SEM_5)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC7)) = LIBRE) then
+				semaforo_auto_CV_7 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC8)) = OCUPADO) then
+				semaforo_auto_CV_8(semaforos_t'pos(SEM_2)) <= ROJO;
+				semaforo_auto_CV_8(semaforos_t'pos(SEM_4)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC8)) = LIBRE) then
+				semaforo_auto_CV_8 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC9)) = OCUPADO) then
+				semaforo_auto_CV_9(semaforos_t'pos(SEM_3)) <= AMARILLO;
+				semaforo_auto_CV_9(semaforos_t'pos(SEM_5)) <= ROJO;
+				semaforo_auto_CV_9(semaforos_t'pos(SEM_7)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC9)) = LIBRE) then
+				semaforo_auto_CV_9 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC10)) = OCUPADO) then
+				semaforo_auto_CV_10(semaforos_t'pos(SEM_2)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC10)) = LIBRE) then
+				semaforo_auto_CV_10 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC11)) = OCUPADO) then
+				semaforo_auto_CV_11(semaforos_t'pos(SEM_5)) <= AMARILLO;
+				semaforo_auto_CV_11(semaforos_t'pos(SEM_7)) <= ROJO;
+				semaforo_auto_CV_11(semaforos_t'pos(SEM_9)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC11)) = LIBRE) then
+				semaforo_auto_CV_11 <= "11111111111";
+			end if;
+			
+			if (Circuito_Via(circuitos_t'pos(CIRC12)) = OCUPADO) then
+				--semaforo_auto_CV_12(semaforos_t'pos(SEM_3)) <= ROJO;
+			elsif (Circuito_Via(circuitos_t'pos(CIRC12)) = LIBRE) then
+				semaforo_auto_CV_12 <= "11111111111";
+			end if;	
+		end if;		
+	end process MODO_AUTOMATICO;
+	
 	SEMAFORO_ASIGNADOR: process(Clock)
 	begin
 		if (Clock ='1' and Clock'Event) then
 			if (Reset = '1') then
 				Semaforos <= "00000000000";
 			else
-				Semaforos(semaforos_t'pos(SEM_1)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_1));
-				Semaforos(semaforos_t'pos(SEM_2)) <= Semaforos_DES(sem_des_t'pos(SEM_2));
-				Semaforos(semaforos_t'pos(SEM_3)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_3));
-				Semaforos(semaforos_t'pos(SEM_4)) <= Semaforos_DES(sem_des_t'pos(SEM_4));
-				Semaforos(semaforos_t'pos(SEM_5)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_5));
-				Semaforos(semaforos_t'pos(SEM_6)) <= Semaforos_DES(sem_des_t'pos(SEM_6));
-				Semaforos(semaforos_t'pos(SEM_7)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_7));
-				Semaforos(semaforos_t'pos(SEM_8)) <= Semaforos_DES(sem_des_t'pos(SEM_8));
-				Semaforos(semaforos_t'pos(SEM_9)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_9));
-				Semaforos(semaforos_t'pos(SEM_10)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_10));
-				Semaforos(semaforos_t'pos(SEM_11)) <= Semaforos_DES(sem_des_t'pos(SEM_11));
+				if(Modo = SEMIAUTOMATICO) then			
+					Semaforos(semaforos_t'pos(SEM_1)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_1));
+					Semaforos(semaforos_t'pos(SEM_2)) <= Semaforos_DES(sem_des_t'pos(SEM_2));
+					Semaforos(semaforos_t'pos(SEM_3)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_3));
+					Semaforos(semaforos_t'pos(SEM_4)) <= Semaforos_DES(sem_des_t'pos(SEM_4));
+					Semaforos(semaforos_t'pos(SEM_5)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_5));
+					Semaforos(semaforos_t'pos(SEM_6)) <= Semaforos_DES(sem_des_t'pos(SEM_6));
+					Semaforos(semaforos_t'pos(SEM_7)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_7));
+					Semaforos(semaforos_t'pos(SEM_8)) <= Semaforos_DES(sem_des_t'pos(SEM_8));
+					Semaforos(semaforos_t'pos(SEM_9)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_9));
+					Semaforos(semaforos_t'pos(SEM_10)) <= Semaforos_ASC(SEM_asc_t'pos(SEM_10));
+					Semaforos(semaforos_t'pos(SEM_11)) <= Semaforos_DES(sem_des_t'pos(SEM_11));
+				elsif (Modo = AUTOMATICO) then
+					--Semaforos <= "10010010011";
+					Semaforos <= semaforo_auto_CV_1 and semaforo_auto_CV_2 and semaforo_auto_CV_3 and
+								 semaforo_auto_CV_4 and semaforo_auto_CV_5 and semaforo_auto_CV_6 and
+								 semaforo_auto_CV_7 and semaforo_auto_CV_8 and semaforo_auto_CV_9 and
+								 semaforo_auto_CV_10 and semaforo_auto_CV_11 and semaforo_auto_CV_12;			
+				end if;
 			end if;
 		end if;
 	end process SEMAFORO_ASIGNADOR;
@@ -795,26 +906,6 @@ begin
 				PaN(ECHEVERRIA) <= PaN_ASC(ECHEVERRIA) and PaN_DES(ECHEVERRIA);
 				PaN(JURAMENTO) <= PaN_ASC(JURAMENTO) and PaN_DES(JURAMENTO);		
 			end if;
-			
-			-- if PaN(PAMPA) = BARRERA_BAJA then
-				-- PaN_Bajo(PAMPA) <= PaN(PAMPA);
-			-- end if;
-			-- if PaN(ECHEVERRIA) = BARRERA_BAJA then
-				-- PaN_Bajo(ECHEVERRIA) <= PaN(ECHEVERRIA);
-			-- end if;
-			-- if PaN(JURAMENTO) = BARRERA_BAJA then
-				-- PaN_Bajo(JURAMENTO) <= PaN(JURAMENTO);
-			-- end if;
-				
-			-- if PaN(PAMPA) = BARRERA_ALTA then
-				-- PaN_Alto(PAMPA) <= PaN(PAMPA);
-			-- end if;
-			-- if PaN(ECHEVERRIA) = BARRERA_ALTA then
-				-- PaN_Alto(ECHEVERRIA) <= PaN(ECHEVERRIA);
-			-- end if;
-			-- if PaN(JURAMENTO) = BARRERA_ALTA then
-				-- PaN_Alto(JURAMENTO) <= PaN(JURAMENTO);
-			-- end if;
 		end if;
 	end process BARRERAS;
 	
