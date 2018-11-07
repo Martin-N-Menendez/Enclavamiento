@@ -46,7 +46,7 @@ architecture Semiautomatico_tb_arq of Semiautomatico_tb is
 	-- Salidas
 	signal Semaforos_tb: std_logic_vector(N_SM_tb-1 downto 0);	
 	signal Maquina_tb: std_logic;
-	signal PaN_tb: std_logic_vector(N_PaN_tb-1 downto 0) := (N_PaN_tb-1 downto 0 => '0');
+	signal PaN_tb: std_logic_vector(N_PaN_tb-1 downto 0);
 	
 	--signal Semaforos_tb: SEMAFORO;
 	type rutas is (RUTA_RESET,RUTA1,RUTA2,RUTA3,RUTA4,RUTA5,RUTA6,RUTA7,RUTA8,RUTA9,RUTA10,RUTA11,RUTA_0ASC,RUTA_0DES);
@@ -111,7 +111,7 @@ begin
 	begin
 		wait for 10 ns;
 		Reset_tb <= '1';
-		wait for 20 ns;
+		wait for 100 ns;
 		Reset_tb <= '0';
 		wait for 5000 ns;
 	end process BOOTING;
