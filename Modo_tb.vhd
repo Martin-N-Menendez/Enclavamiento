@@ -4,10 +4,10 @@ use IEEE.numeric_std.all;
 
 use work.semaforo_tipo.all;
 
-entity Semiautomatico_tb is
+entity Modo_tb is
 end;
 
-architecture Semiautomatico_tb_arq of Semiautomatico_tb is
+architecture Modo_tb_arq of Modo_tb is
 	-- Parte declarativa
 	component FSM_Belgrano is
 		generic( N_CV: natural := 12; N_SM: natural := 11; N_PaN: natural := 3; N_rutas: natural := 13 );
@@ -171,6 +171,7 @@ begin
 		Ruta_tb(0) <= 3;
 		wait for 3*delay;
 		Ruta_tb(0) <= 4;
+		Modo_in_tb <= AUTOMATICO;
 		wait for 3*delay;
 		Ruta_tb(0) <= 5;
 		wait for 3*delay;
@@ -178,6 +179,7 @@ begin
 		Ruta_tb(1) <= 6;
 		wait for 3*delay;
 		Ruta_tb(1) <= 7;
+		Modo_in_tb <= SEMIAUTOMATICO;
 		wait for 3*delay;
 		Ruta_tb(1) <= 8;
 		wait for 3*delay;

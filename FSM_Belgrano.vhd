@@ -10,7 +10,7 @@ N_rutas: natural := 13 );
 	port(
 		Clock,Reset: in std_logic;
 		Ruta: in ruta_array;
-		Modo: in std_logic;
+		Modo_in: in std_logic;
 		Circuito_Via: in std_logic_vector(N_CV-1 downto 0);	
 		Semaforos_in: in std_logic_vector(N_SM-1 downto 0);
 		Maquina_N: in std_logic;
@@ -110,6 +110,8 @@ architecture FSM_Belgrano_arq of FSM_Belgrano is
 	signal PaN_DES: std_logic_vector(N_PaN-1 downto 0);
 	signal Maquina_ASC: std_logic := '0';
 	signal Maquina_DES: std_logic := '0';
+	
+	signal Modo: std_logic;
 	
 begin	
 	habilitacion(rutas'pos(RUTA_RESET)) <= '1';
@@ -806,6 +808,7 @@ begin
 			if (Circuito_Via(circuitos_t'pos(CIRC3)) = OCUPADO) then
 				semaforo_auto_CV_3(semaforos_t'pos(SEM_1)) <= ROJO;
 				semaforo_auto_CV_3(semaforos_t'pos(SEM_3)) <= ROJO;
+				PaN_auto_CV_3(PAMPA) <= BARRERA_BAJA;
 				PaN_auto_CV_3(ECHEVERRIA) <= BARRERA_BAJA;
 			elsif (Circuito_Via(circuitos_t'pos(CIRC3)) = LIBRE) then
 				semaforo_auto_CV_3 <= "11111111111";
@@ -815,6 +818,8 @@ begin
 			if (Circuito_Via(circuitos_t'pos(CIRC5)) = OCUPADO) then
 				semaforo_auto_CV_5(semaforos_t'pos(SEM_1)) <= ROJO;
 				semaforo_auto_CV_5(semaforos_t'pos(SEM_3)) <= ROJO;
+				PaN_auto_CV_5(PAMPA) <= BARRERA_BAJA;
+				PaN_auto_CV_5(ECHEVERRIA) <= BARRERA_BAJA;
 				PaN_auto_CV_5(JURAMENTO) <= BARRERA_BAJA;
 			elsif (Circuito_Via(circuitos_t'pos(CIRC5)) = LIBRE) then
 				semaforo_auto_CV_5 <= "11111111111";
@@ -826,6 +831,8 @@ begin
 				semaforo_auto_CV_7(semaforos_t'pos(SEM_3)) <= ROJO;
 				semaforo_auto_CV_7(semaforos_t'pos(SEM_5)) <= ROJO;
 				PaN_auto_CV_7(PAMPA) <= BARRERA_ALTA;
+				PaN_auto_CV_7(ECHEVERRIA) <= BARRERA_BAJA;
+				PaN_auto_CV_7(JURAMENTO) <= BARRERA_BAJA;
 			elsif (Circuito_Via(circuitos_t'pos(CIRC7)) = LIBRE) then
 				semaforo_auto_CV_7 <= "11111111111";
 				PaN_auto_CV_7 <= "111";
@@ -836,6 +843,7 @@ begin
 				semaforo_auto_CV_9(semaforos_t'pos(SEM_5)) <= ROJO;
 				semaforo_auto_CV_9(semaforos_t'pos(SEM_7)) <= ROJO;
 				PaN_auto_CV_9(ECHEVERRIA) <= BARRERA_ALTA;
+				PaN_auto_CV_9(JURAMENTO) <= BARRERA_BAJA;
 			elsif (Circuito_Via(circuitos_t'pos(CIRC9)) = LIBRE) then
 				semaforo_auto_CV_9 <= "11111111111";
 				PaN_auto_CV_9 <= "111";
@@ -882,6 +890,7 @@ begin
 			if (Circuito_Via(circuitos_t'pos(CIRC10)) = OCUPADO) then
 				semaforo_auto_CV_10(semaforos_t'pos(SEM_2)) <= ROJO;
 				PaN_auto_CV_10(ECHEVERRIA) <= BARRERA_BAJA;
+				PaN_auto_CV_10(JURAMENTO) <= BARRERA_BAJA;
 			elsif (Circuito_Via(circuitos_t'pos(CIRC10)) = LIBRE) then
 				semaforo_auto_CV_10 <= "11111111111";
 				PaN_auto_CV_10 <= "111";
@@ -891,6 +900,8 @@ begin
 				semaforo_auto_CV_8(semaforos_t'pos(SEM_2)) <= ROJO;
 				semaforo_auto_CV_8(semaforos_t'pos(SEM_4)) <= ROJO;
 				PaN_auto_CV_8(PAMPA) <= BARRERA_BAJA;
+				PaN_auto_CV_8(ECHEVERRIA) <= BARRERA_BAJA;
+				PaN_auto_CV_8(JURAMENTO) <= BARRERA_BAJA;
 			elsif (Circuito_Via(circuitos_t'pos(CIRC8)) = LIBRE) then
 				semaforo_auto_CV_8 <= "11111111111";
 				PaN_auto_CV_8 <= "111";
@@ -899,6 +910,8 @@ begin
 			if (Circuito_Via(circuitos_t'pos(CIRC6)) = OCUPADO) then
 				semaforo_auto_CV_6(semaforos_t'pos(SEM_2)) <= ROJO;
 				semaforo_auto_CV_6(semaforos_t'pos(SEM_4)) <= ROJO;
+				PaN_auto_CV_6(PAMPA) <= BARRERA_BAJA;
+				PaN_auto_CV_6(ECHEVERRIA) <= BARRERA_BAJA;
 				PaN_auto_CV_6(JURAMENTO) <= BARRERA_ALTA;
 			elsif (Circuito_Via(circuitos_t'pos(CIRC6)) = LIBRE) then
 				semaforo_auto_CV_6 <= "11111111111";
@@ -909,6 +922,7 @@ begin
 				semaforo_auto_CV_4(semaforos_t'pos(SEM_2)) <= AMARILLO;
 				semaforo_auto_CV_4(semaforos_t'pos(SEM_4)) <= ROJO;	
 				semaforo_auto_CV_4(semaforos_t'pos(SEM_6)) <= ROJO;
+				PaN_auto_CV_4(PAMPA) <= BARRERA_BAJA;
 				PaN_auto_CV_4(ECHEVERRIA) <= BARRERA_ALTA;
 			elsif (Circuito_Via(circuitos_t'pos(CIRC4)) = LIBRE) then
 				semaforo_auto_CV_4 <= "11111111111";
@@ -995,15 +1009,20 @@ begin
 		end if;
 	end process MAQUINAS;
 	
-	-- MODOS: process(Clock, Reset)
-	-- begin
-		-- if (Clock ='1' and Clock'Event and Reset='1') then
-			-- Modo <= SEMIAUTOMATICO;
-		-- elsif (Clock'event and Clock='1') then
-			-- if (Modo = AUTOMATICO and habilitacion(rutas'pos(RUTA_0ASC)) = '1' habilitacion(rutas'pos(RUTA_0DES)) = '1') then
-				-- Modo = Modo;
-			-- end if;
-		-- end if;
-	-- end process MODOS;
+	MODOS: process(Clock, Reset)
+	begin
+		if (Clock ='1' and Clock'Event and Reset='1') then
+			if(Reset ='1') then
+				Modo <= SEMIAUTOMATICO;
+			end if;
+			else
+				if (Modo_in = AUTOMATICO and habilitacion(rutas'pos(RUTA_0ASC)) = '1' and habilitacion(rutas'pos(RUTA_0DES)) = '1') then
+					Modo <= AUTOMATICO;
+				end if;
+				if (Modo_in = SEMIAUTOMATICO) then
+					Modo <= SEMIAUTOMATICO;
+				end if;
+		end if;
+	end process MODOS;
 	
 end architecture;

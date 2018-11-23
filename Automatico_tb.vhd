@@ -14,7 +14,7 @@ architecture Automatico_tb_arq of Automatico_tb is
 	port(
 		Clock,Reset: in std_logic;
 		Ruta: in ruta_array;
-		Modo: in std_logic;
+		Modo_in: in std_logic;
 		Circuito_Via: in std_logic_vector(N_CV-1 downto 0);	
 		Semaforos_in: in std_logic_vector(N_SM-1 downto 0);
 		Maquina_N: in std_logic;
@@ -36,7 +36,7 @@ architecture Automatico_tb_arq of Automatico_tb is
 	signal Clock_tb: std_logic := '0';
 	signal Reset_tb: std_logic := '0';
 	signal Ruta_tb: ruta_array := (2-1 downto 0 => 0);
-	signal Modo_tb: std_logic := '1';
+	signal Modo_in_tb: std_logic := '1';
 	signal Circuito_Via_tb: std_logic_vector(N_CV_tb-1 downto 0) := (N_CV_tb-1 downto 0 => '1');
 	signal Semaforos_in_tb: std_logic_vector(N_SM_tb-1 downto 0) := (N_SM_tb-1 downto 0 => '0');	
 	signal Maquina_N_tb: std_logic := '1';
@@ -167,16 +167,15 @@ begin
 		Circuito_Via_tb(circuitos_t'pos(CIRC4)) <= LIBRE;
 		wait for 2*delay;
 		Circuito_Via_tb(circuitos_t'pos(CIRC2)) <= LIBRE;
-		wait for 2000 ns;
+		wait for 5500 ns;
 	end process CVS;
-	
 	
 	DUT: FSM_Belgrano
 		port map(
 			Clock => Clock_tb,
 			Reset => Reset_tb,
 			Ruta => Ruta_tb,
-			Modo => Modo_tb,
+			Modo_in => Modo_in_tb,
 			Circuito_Via => Circuito_Via_tb,
 			Semaforos_in => Semaforos_in_tb,
 			Maquina_N => Maquina_N_tb,
